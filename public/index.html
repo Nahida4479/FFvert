@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FFvert</title>
 </head>
-<body style="background-color: red;">
+<body style="background-color: rgb(82, 61, 61);">
     <h1 style="text-align: center;">FFvert</h1>
     <main style="text-align: center;">
     <input type="file" id="fileinput" accept="video/*">
@@ -18,8 +18,16 @@
         <option value="MKV">MKV</option>
         <option value="WMV">WMV</option>
     </select>
+        <select id="resolutionselect">
+            <option value="3840x2160">4K (3840x2160)</option>
+            <option value="2560x1440">1440p (2560x1440)</option>
+            <option value="1920x1080">1080p (1920x1080)</option>
+            <option value="1280x720">720p (1280x720)</option>
+            <option value="854x480">480p (854x480)</option>
+        </select>
         <button id="conbutton">Convert</button>
+
         </main>
-    <script src="script.js"></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>
