@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FFvert</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body style="background-color: rgb(82, 61, 61);">
     <h1 style="text-align: center;">FFvert</h1>
@@ -19,13 +20,14 @@
         <option value="WMV">WMV</option>
     </select>
         <select id="resolutionselect">
-            <option value="3840x2160">4K (3840x2160)</option>
-            <option value="2560x1440">1440p (2560x1440)</option>
-            <option value="1920x1080">1080p (1920x1080)</option>
-            <option value="1280x720">720p (1280x720)</option>
-            <option value="854x480">480p (854x480)</option>
+            <option value="3840x2160">4K (3840x2160 or 2160x3840)</option>
+            <option value="2560x1440">1440p (2560x1440 or 1440x2560)</option>
+            <option value="1920x1080">1080p (1920x1080 or 1080x1920)</option>
+            <option value="1280x720">720p (1280x720 or 720x1280)</option>
+            <option value="854x480">480p (854x480 or 480x854)</option>
         </select>
         <button id="conbutton">Convert</button>
+        <button id="downloadoutput" hidden>Download</button>
 
         </main>
     <script src="script.js" type="module"></script>
