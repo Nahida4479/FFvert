@@ -9,7 +9,12 @@ const fileformat = document.getElementById('formatselect');
 const videoresolutionlist = document.getElementById('resolutionselect')
 const outputdownloadbutton = document.getElementById('downloadoutput')
 
+ffmpeg_package.on('log', ({ type, message }) =>{
+    console.log(`[ffmpeg ${type}]`, message);
+});
+
 convertbutton.addEventListener('click', async function() {
+    try {
     console.log("You click convert button");
     const selectconvertfile = uploadfile.files[0];
 
@@ -28,11 +33,19 @@ convertbutton.addEventListener('click', async function() {
         console.log("Starting FFmpeg load...")
         try {
         const baseFFmpegURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
-        await ffmpeg_package.load({
-            coreURL: await toBlobURL(`${baseFFmpegURL}/ffmpeg-core.js`, 'text/javascript'),
-            wasmURL: await toBlobURL(`${baseFFmpegURL}/ffmpeg-core.wasm`, 'application/wasm'),
-            classWorkerURL: await toBlobURL('https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/worker.js', 'text/javascript'),
-        });
+        console.log("Before package.load")
+        console.log("Fetching core.js...");
+        const coreURL = await toBlobURL(`${baseFFmpegURL}/ffmpeg-core.js`, 'text/javascript');
+        console.log("core.js done, fetching core.wasm...");
+
+        const wasmURL = await toBlobURL(`${baseFFmpegURL}/ffmpeg-core.wasm`, 'application/wasm');
+        console.log("core.wasm done, fetching worker.js...");
+
+        const workerURL = await toBlobURL('https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/worker.js', 'text/javascript');
+        console.log("worker.js done, calling load()...");
+
+        await ffmpeg_package.load({ coreURL, wasmURL, classWorkerURL: workerURL });
+        console.log("load() finished!");
         ffmpeg_loaded = true
         console.log("FFmpeg_package is loaded")
     } catch (error) {
@@ -43,7 +56,7 @@ convertbutton.addEventListener('click', async function() {
         console.log("FFmpeg_package was loaded")
     }
 
-
+    console.log("After package.load")
     const inputFileName = `input.${inputFileExtension}`;
     const outputFileName = `output.${fileformat.value}`;
 
@@ -106,5 +119,7 @@ convertbutton.addEventListener('click', async function() {
     ffmpeg_package.on('process', (data) => {
         console.log(data.progress);
     });
-
+    } catch (error) {
+        console.error("Error: ", error)
+    }
 });
