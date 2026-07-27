@@ -17,5 +17,15 @@ convertbutton.addEventListener("click", async function() {
        body: formDatatoServer 
     });
 
+    const outputBlob = await response.blob();
+    const downloadURL = URL.createObjectURL(outputBlob);
+    outputdownloadbutton.hidden = false;
+
+    outputdownloadbutton.addEventListener("click", function() {
+        const a = document.createElement('a');
+        a.href = downloadURL;
+        a.download = `finalfile.${fileformat.value}`;
+        a.click();
+    });
 
 });
