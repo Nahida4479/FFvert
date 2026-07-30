@@ -9,6 +9,10 @@ const fs = require('fs');
 
 app.use(express.static('./public'))
 app.post('/convert', upload.single('video'), function(req, res) {
+    if (!req.file) {
+        res.status(400).send("No file uploaded!");
+        return;
+    }
     console.log(req.file)
     console.log(res.body)
     const inputPath = req.file.path
@@ -46,6 +50,12 @@ app.post('/convert', upload.single('video'), function(req, res) {
             if (err) console.log("Failed to delete input file", err);
         });
     });
+
+    setTimeout(function() {
+    fs.unlink(outputfile, function(err) {
+        if (err) console.log("Failed to delete output file:", err);
+    });
+    }, 60000);
 
 });
 
