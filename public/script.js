@@ -3,6 +3,7 @@ const uploadfile = document.getElementById('fileinput')
 const fileformat = document.getElementById('formatselect');
 const videoresolutionlist = document.getElementById('resolutionselect')
 const outputdownloadbutton = document.getElementById('downloadoutput')
+let hideButtonTime
 
 convertbutton.addEventListener("click", async function() {
     const useruploadfile = uploadfile.files[0];
@@ -34,4 +35,9 @@ convertbutton.addEventListener("click", async function() {
         startDownload();
     });
 
+    clearTimeout(hideButtonTime);
+    
+    hideButtonTime = setTimeout(function() {
+        outputdownloadbutton.hidden = true;
+    }, 60000);
 });
