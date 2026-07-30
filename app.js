@@ -25,8 +25,23 @@ app.post('/convert', upload.single('video'), function(req, res) {
         const selectResolution = req.body.resolution.split("x")
         const selectResolutionWidth = Number(selectResolution[0]);
         const selectResolutionHeight = Number(selectResolution[1]);
+        let FinalWidth;
+        let FinalHeight;
 
-        execFile(ffmpegPath, ['-i', inputPath, outputfile], function(error, stdout, stderr) {
+        if (originalHeight < selectResolutionHeight || originalWidth < selectResolutionWidth) {
+            res.status(400).send('Invalid resolution: requested resolution exceeds the original videos resolution.')
+            return;
+        } 
+
+        if (originalHeight > originalWidth) {
+            FinalWidth = selectResolutionHeight;
+            FinalHeight = selectResolutionWidth;
+        } else {
+            FinalWidth = selectResolutionWidth;
+            FinalHeight = selectResolutionHeight
+        }
+
+        execFile(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}`, outputfile], function(error, stdout, stderr) {
         console.log(error)
         res.send('Plik odebrany!');
     });
