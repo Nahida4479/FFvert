@@ -21,11 +21,17 @@ convertbutton.addEventListener("click", async function() {
     const downloadURL = URL.createObjectURL(outputBlob);
     outputdownloadbutton.hidden = false;
 
-    outputdownloadbutton.addEventListener("click", function() {
+
+    function startDownload() {
         const a = document.createElement('a');
         a.href = downloadURL;
         a.download = `finalfile.${fileformat.value}`;
-        a.click();
+        a.click();  
+    }
+    startDownload();
+
+    outputdownloadbutton.addEventListener("click", function() {
+        startDownload();
     });
 
 });

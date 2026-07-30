@@ -5,6 +5,7 @@ const { execFile } = require('child_process');
 const ffmpeg_probe = require('@andrkrn/ffprobe-static');
 const upload = multer({ dest: 'uploads/'});
 const app = express();
+const fs = require('fs');
 
 
 app.use(express.static('./public'))
@@ -28,12 +29,7 @@ app.post('/convert', upload.single('video'), function(req, res) {
         let FinalWidth;
         let FinalHeight;
 
-        if (originalHeight < selectResolutionHeight || originalWidth < selectResolutionWidth) {
-            res.status(400).send('Invalid resolution: requested resolution exceeds the original videos resolution.')
-            return;
-        } 
-
-        if (originalHeight > originalWidth) {
+        if ((originalHeight > originalWidth) ) {
             FinalWidth = selectResolutionHeight;
             FinalHeight = selectResolutionWidth;
         } else {
@@ -43,7 +39,19 @@ app.post('/convert', upload.single('video'), function(req, res) {
 
         execFile(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}`, outputfile], function(error, stdout, stderr) {
         console.log(error)
-        res.send('Plik odebrany!');
+        console.log("FFMPEG ERROR:", error);
+        console.log("FFMPEG STDERR:", stderr);
+        res.download(outputfile);
+
+        fs.unlink(inputPath, function(err) {
+            if (err) console.log("Failed to delete input file", err);
+        });
+
+        setTimeout(function() {
+            fs.unlink(outputfile, function(err) {
+                if (err) console.log("Failed to delete output file:", err);
+            });
+        }, 60000);
     });
 
 });
