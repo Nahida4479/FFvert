@@ -22,13 +22,16 @@ app.post('/convert', upload.single('video'), function(req, res) {
         const probeData = JSON.parse(stdout);
         const originalWidth = probeData.streams[0].width
         const originalHeight = probeData.streams[0].height
+        const selectResolution = req.body.resolution.split("x")
+        const selectResolutionWidth = Number(selectResolution[0]);
+        const selectResolutionHeight = Number(selectResolution[1]);
 
         execFile(ffmpegPath, ['-i', inputPath, outputfile], function(error, stdout, stderr) {
         console.log(error)
         res.send('Plik odebrany!');
     });
 
-    });
+});
 
 
 });
