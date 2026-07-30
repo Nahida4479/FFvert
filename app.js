@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const { execFile } = require('child_process');
 const upload = multer({ dest: 'uploads/'});
 const app = express();
 
@@ -7,6 +8,7 @@ app.use(express.static('./public'))
 app.post('/convert', upload.single('video'), function(req, res) {
     console.log(req.file)
     console.log(res.body)
+    res.send('Plik odebrany!');
 });
 
 app.listen(3003, () => {
