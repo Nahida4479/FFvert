@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const ffmpegPath = require('ffmpeg-static')
-const { execFile } = require('child_process');
+const { execFile, exec } = require('child_process');
 const ffmpeg_probe = require('@andrkrn/ffprobe-static');
 const upload = multer({ dest: 'uploads/'});
 const app = express();
@@ -40,7 +40,29 @@ app.post('/convert', upload.single('video'), function(req, res) {
             FinalHeight = selectResolutionHeight
         }
 
-        execFile(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}`, outputfile], function(error, stdout, stderr) {
+
+        if (req.body.format === "gif") {
+        // Gif pallete
+        const gifPalleteGeneratePath = `uploads/palette-${req.file.filename}.png`;
+        execFile(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}, palettegen`, gifPalleteGeneratePath], function(error, stdout, stdeer) {
+            console.log("PALETTE ERROR: ", error);
+
+        // Normal convert
+        execFile(ffmpegPath, ['-i', inputPath, '-i', gifPalleteGeneratePath, '-filter_complex', `scale=${FinalWidth}:${FinalHeight}[x];[x][1:v]paletteuse`, outputfile], function(error, stdout, stderr) {
+            console.log(error)
+            console.log("FFMPEG ERROR:", error);
+            console.log("FFMPEG STDERR:", stderr);
+            res.download(outputfile);
+
+            fs.unlink(inputPath, function(err) {
+            if (err) console.log("Failed to delete input file", err);
+
+        });
+
+        });
+    });
+    } else {
+           execFile(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}`, outputfile], function(error, stdout, stderr) {
         console.log(error)
         console.log("FFMPEG ERROR:", error);
         console.log("FFMPEG STDERR:", stderr);
@@ -49,7 +71,8 @@ app.post('/convert', upload.single('video'), function(req, res) {
         fs.unlink(inputPath, function(err) {
             if (err) console.log("Failed to delete input file", err);
         });
-    });
+    }); 
+        }
 
     setTimeout(function() {
     fs.unlink(outputfile, function(err) {
