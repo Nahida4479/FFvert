@@ -104,7 +104,9 @@ uploadfile.addEventListener('change', function(){
         formatupload.hidden = true
     }
 
-    dropzone.addEventListener('dragover', function(event) {
+});
+
+dropzone.addEventListener('dragover', function(event) {
         event.preventDefault();
         dropzone.style.borderColor = 'purple';
 });
@@ -123,5 +125,4 @@ uploadfile.addEventListener('change', function(){
             uploadfile.files = droppedFiles;
             uploadfile.dispatchEvent(new Event('change'));
     }
-});
 });
