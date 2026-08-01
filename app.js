@@ -103,6 +103,12 @@ app.post('/convert', upload.single('video'), function(req, res) {
 
 });
 
+app.get('/progress/:conversionId', function(req, res) {
+    const conversionId = req.params.conversionId;
+    console.log("New SSE connection for:", conversionId);
+});
+
+
 app.listen(3003, () => {
     console.log("Active: Port 3003")
 })

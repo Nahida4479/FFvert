@@ -8,11 +8,20 @@ let hideButtonTime
 
 convertbutton.addEventListener("click", async function() {
     const useruploadfile = uploadfile.files[0];
+    const conversionId = Date.now() + "-" + Math.random().toString(36).slice(2);
+    console.log("Conversion ID:", conversionId);
+
+    const eventSource = new EventSource('/progress/' + conversionId);
+    eventSource.onmessage = function(event) {
+        console.log("Progress update:", event.data);
+    };  
+
 
     const formDatatoServer = new FormData();
     formDatatoServer.append('video', useruploadfile); // User upload file
     formDatatoServer.append('resolution', videoresolutionlist.value); 
     formDatatoServer.append('format', fileformat.value);
+    formDatatoServer.append('conversionId', conversionId)
 
     const response = await fetch('/convert', {
        method: 'POST',
