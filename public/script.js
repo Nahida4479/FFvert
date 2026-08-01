@@ -103,4 +103,25 @@ uploadfile.addEventListener('change', function(){
         selectedFileName.textContent = fileName;
         formatupload.hidden = true
     }
+
+    dropzone.addEventListener('dragover', function(event) {
+        event.preventDefault();
+        dropzone.style.borderColor = 'purple';
+});
+
+    dropzone.addEventListener('dragleave', function(event) {
+        event.preventDefault();
+        dropzone.style.borderColor = '';
+});
+
+    dropzone.addEventListener('drop', function(event) {
+        event.preventDefault();
+        dropzone.style.borderColor = '';
+
+    const droppedFiles = event.dataTransfer.files;
+        if (droppedFiles.length > 0) {
+            uploadfile.files = droppedFiles;
+            uploadfile.dispatchEvent(new Event('change'));
+    }
+});
 });
