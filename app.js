@@ -8,6 +8,24 @@ const app = express();
 const fs = require('fs');
 const progressConmections = {};
 
+if (!fs.existsSync('uploads/')) {
+    try {
+    fs.mkdirSync('uploads/');
+    console.log('Create folder: uploads')
+} catch (err) {
+    console.log('Could not create uploads folder. Check permissions.', err)
+    }
+}
+
+const uploadedFiles = fs.readdirSync('uploads/');
+
+uploadedFiles.forEach(function(fileName) {
+    if (fileName !== '.gitkeep') {
+        fs.unlinkSync('uploads/' + fileName);
+    }
+});
+console.log("Cleaned up", uploadedFiles.length, "old files from uploads/");
+
 app.use(express.static('./public'))
 app.post('/convert', upload.single('video'), function(req, res) {
     if (!req.file) {
@@ -81,6 +99,7 @@ app.post('/convert', upload.single('video'), function(req, res) {
             const currentSeconds = Number(match[1]) * 3600 + Number(match[2]) * 60 + Number(match[3]);
             const convertProgressPercent = (currentSeconds / videoDuration) * 100;
             console.log("Progress:", convertProgressPercent.toFixed(1) + "%");
+
 
             if (progressConmections[conversionId]) {
                 progressConmections[conversionId].write(`data: ${convertProgressPercent.toFixed(1)}\n\n`);
