@@ -5,15 +5,25 @@ const videoresolutionlist = document.getElementById('resolutionselect')
 const outputdownloadbutton = document.getElementById('downloadoutput')
 const funfact = document.getElementById('funfact');
 let hideButtonTime
+const processContainer = document.getElementById('progressContainer');
+const progressBar = document.getElementById('progressBar')
+const progressText = document.getElementById('progressText');
+const dropzone = document.getElementById('dropzone');
+const optionsPanel = document.getElementById('optionsPanel');
 
 convertbutton.addEventListener("click", async function() {
+    optionsPanel.hidden = true;
     const useruploadfile = uploadfile.files[0];
     const conversionId = Date.now() + "-" + Math.random().toString(36).slice(2);
     console.log("Conversion ID:", conversionId);
 
+    processContainer.style.display = 'block';
+    progressBar.style.width = '0%';
+
     const eventSource = new EventSource('/progress/' + conversionId);
     eventSource.onmessage = function(event) {
-        console.log("Progress update:", event.data);
+        progressBar.style.width = event.data + '%';
+        progressText.textContent = event.data + "%";
     };  
 
 
@@ -31,6 +41,7 @@ convertbutton.addEventListener("click", async function() {
     const outputBlob = await response.blob();
     const downloadURL = URL.createObjectURL(outputBlob);
     outputdownloadbutton.hidden = false;
+    processContainer.style.display = 'none';
 
 
     function startDownload() {
@@ -69,3 +80,12 @@ let currentFactIndex = 0;
       currentFactIndex = (currentFactIndex + 1) % funFacts.length;
       funfact.textContent = funFacts[currentFactIndex];
     }, 10000);
+
+dropzone.addEventListener('click', function() {
+    uploadfile.click();
+});
+
+uploadfile.addEventListener('change', function(){
+    dropzone.hidden = true;
+    optionsPanel.hidden = false;
+});

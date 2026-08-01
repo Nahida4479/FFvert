@@ -5,7 +5,8 @@ const { execFile, exec, spawn } = require('child_process');
 const ffmpeg_probe = require('@andrkrn/ffprobe-static');
 const upload = multer({ dest: 'uploads/'});
 const app = express();
-const fs = require('fs'); 
+const fs = require('fs');
+const progressConmections = {};
 
 app.use(express.static('./public'))
 app.post('/convert', upload.single('video'), function(req, res) {
@@ -16,6 +17,7 @@ app.post('/convert', upload.single('video'), function(req, res) {
     console.log(req.file)
     console.log(res.body)
     const inputPath = req.file.path
+    const conversionId = req.body.conversionId;
     const nameParts = req.file.originalname.split('.');
     const basefileextenstion = nameParts[nameParts.length - 1];
     const outputfile = `uploads/output-${req.file.filename}.${req.body.format}`;
@@ -79,6 +81,10 @@ app.post('/convert', upload.single('video'), function(req, res) {
             const currentSeconds = Number(match[1]) * 3600 + Number(match[2]) * 60 + Number(match[3]);
             const convertProgressPercent = (currentSeconds / videoDuration) * 100;
             console.log("Progress:", convertProgressPercent.toFixed(1) + "%");
+
+            if (progressConmections[conversionId]) {
+                progressConmections[conversionId].write(`data: ${convertProgressPercent.toFixed(1)}\n\n`);
+            }
             }
         });
 
@@ -106,6 +112,12 @@ app.post('/convert', upload.single('video'), function(req, res) {
 app.get('/progress/:conversionId', function(req, res) {
     const conversionId = req.params.conversionId;
     console.log("New SSE connection for:", conversionId);
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    progressConmections[conversionId] = res;
 });
 
 
