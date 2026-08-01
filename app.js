@@ -57,6 +57,12 @@ app.post('/convert', upload.single('video'), function(req, res) {
             fs.unlink(inputPath, function(err) {
             if (err) console.log("Failed to delete input file", err);
 
+            setTimeout(function() {
+            fs.unlink(outputfile, function(err) {
+                if (err) console.log("Failed to delete output file:", err);
+            });
+            }, 60000);
+
         });
 
         });
@@ -70,15 +76,15 @@ app.post('/convert', upload.single('video'), function(req, res) {
 
         fs.unlink(inputPath, function(err) {
             if (err) console.log("Failed to delete input file", err);
+
+            setTimeout(function() {
+            fs.unlink(outputfile, function(err) {
+                if (err) console.log("Failed to delete output file:", err);
+            });
+            }, 60000);
         });
     }); 
         }
-
-    setTimeout(function() {
-    fs.unlink(outputfile, function(err) {
-        if (err) console.log("Failed to delete output file:", err);
-    });
-    }, 60000);
 
 });
 

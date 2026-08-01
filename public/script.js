@@ -3,6 +3,7 @@ const uploadfile = document.getElementById('fileinput')
 const fileformat = document.getElementById('formatselect');
 const videoresolutionlist = document.getElementById('resolutionselect')
 const outputdownloadbutton = document.getElementById('downloadoutput')
+const funfact = document.getElementById('funfact');
 let hideButtonTime
 
 convertbutton.addEventListener("click", async function() {
@@ -36,8 +37,26 @@ convertbutton.addEventListener("click", async function() {
     });
 
     clearTimeout(hideButtonTime);
-    
     hideButtonTime = setTimeout(function() {
         outputdownloadbutton.hidden = true;
     }, 60000);
+
+
 });
+
+let currentFactIndex = 0;
+
+ const funFacts = [
+        "Note: upscaling to a higher resolution will not improve video quality.",
+        "GIFs support a maximum of 256 colors per frame.",
+        "MP4 videos usually use H.264 or H.265 codecs for compression.",
+        "H.264 is one of the most widely supported video codecs, used by most phones and cameras.",
+        "Converting video to GIF often increases file size compared to the original video."
+
+    ];
+
+    funfact.textContent = funFacts[currentFactIndex];
+    setInterval(function() {
+      currentFactIndex = (currentFactIndex + 1) % funFacts.length;
+      funfact.textContent = funFacts[currentFactIndex];
+    }, 10000);
