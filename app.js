@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const ffmpegPath = require('ffmpeg-static')
-const { execFile, exec } = require('child_process');
+const { execFile, exec, spawn } = require('child_process');
 const ffmpeg_probe = require('@andrkrn/ffprobe-static');
 const upload = multer({ dest: 'uploads/'});
 const app = express();
@@ -20,12 +20,13 @@ app.post('/convert', upload.single('video'), function(req, res) {
     const basefileextenstion = nameParts[nameParts.length - 1];
     const outputfile = `uploads/output-${req.file.filename}.${req.body.format}`;
 
-    execFile(ffmpeg_probe, ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'json', inputPath], function(error, stdout, stderr) {
+    execFile(ffmpeg_probe, ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height:format=duration', '-of', 'json', inputPath], function(error, stdout, stderr) {
         console.log("PROBE ERROR:", error);
         console.log("PROBE STDOUT:", stdout);
         const probeData = JSON.parse(stdout);
         const originalWidth = probeData.streams[0].width
         const originalHeight = probeData.streams[0].height
+        const videoDuration = Number(probeData.format.duration);
         const selectResolution = req.body.resolution.split("x")
         const selectResolutionWidth = Number(selectResolution[0]);
         const selectResolutionHeight = Number(selectResolution[1]);
@@ -68,10 +69,14 @@ app.post('/convert', upload.single('video'), function(req, res) {
         });
     });
     } else {
-           execFile(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}`, outputfile], function(error, stdout, stderr) {
-        console.log(error)
-        console.log("FFMPEG ERROR:", error);
-        console.log("FFMPEG STDERR:", stderr);
+        const ffmpegProcess = spawn(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}`, outputfile]);
+
+        ffmpegProcess.stderr.on('data', function(chunk) {
+            console.log('LIVE CHUNK:', chunk.toString());
+        });
+        
+        ffmpegProcess.on('close', function(code) {
+        console.log('FFmpeg finished, code:', code);
         res.download(outputfile);
 
         fs.unlink(inputPath, function(err) {
@@ -84,7 +89,7 @@ app.post('/convert', upload.single('video'), function(req, res) {
             }, 60000);
         });
     }); 
-        }
+}
 
 });
 
