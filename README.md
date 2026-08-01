@@ -31,7 +31,7 @@ Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 ## Installation
 
 ```bash
-git clone <https://github.com/Nahida4479/FFvert.git>
+git clone https://github.com/Nahida4479/FFvert.git
 cd FFvert
 npm install
 ```
