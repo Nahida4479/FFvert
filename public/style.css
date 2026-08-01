@@ -198,6 +198,10 @@ display: none;
   color: #999999;
 }
 
+.dropzone-sub[hidden] {
+  display: none;
+}
+
 @media (max-width: 600px) {
   .infobox {
     font-size: 11px;

@@ -10,6 +10,8 @@ const progressBar = document.getElementById('progressBar')
 const progressText = document.getElementById('progressText');
 const dropzone = document.getElementById('dropzone');
 const optionsPanel = document.getElementById('optionsPanel');
+const selectedFileName = document.getElementById('selectedFileName');
+const formatupload = document.getElementById('formatupload');
 
 convertbutton.addEventListener("click", async function() {
     optionsPanel.hidden = true;
@@ -22,8 +24,12 @@ convertbutton.addEventListener("click", async function() {
 
     const eventSource = new EventSource('/progress/' + conversionId);
     eventSource.onmessage = function(event) {
+    if (event.data === "Generating Color Palette") {
+        progressText.textContent = event.data;
+    } else {
         progressBar.style.width = event.data + '%';
-        progressText.textContent = event.data + "%";
+        progressText.textContent = event.data + "%";   
+    }
     };  
 
 
@@ -88,4 +94,13 @@ dropzone.addEventListener('click', function() {
 uploadfile.addEventListener('change', function(){
     dropzone.hidden = true;
     optionsPanel.hidden = false;
+
+    const fileName = uploadfile.files[0].name;
+    if (fileName.length > 30) {
+        selectedFileName.textContent = fileName.slice(0, 30) + '...';
+        formatupload.hidden = true;
+    } else {
+        selectedFileName.textContent = fileName;
+        formatupload.hidden = true
+    }
 });

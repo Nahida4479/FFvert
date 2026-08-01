@@ -63,29 +63,46 @@ app.post('/convert', upload.single('video'), function(req, res) {
 
 
         if (req.body.format === "gif") {
-        // Gif pallete
-        const gifPalleteGeneratePath = `uploads/palette-${req.file.filename}.png`;
-        execFile(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}, palettegen`, gifPalleteGeneratePath], function(error, stdout, stdeer) {
-            console.log("PALETTE ERROR: ", error);
+    if (progressConmections[conversionId]) {
+        progressConmections[conversionId].write(`data: Generating Color Palette\n\n`);
+    }
 
-        // Normal convert
-        execFile(ffmpegPath, ['-i', inputPath, '-i', gifPalleteGeneratePath, '-filter_complex', `scale=${FinalWidth}:${FinalHeight}[x];[x][1:v]paletteuse`, outputfile], function(error, stdout, stderr) {
-            console.log(error)
-            console.log("FFMPEG ERROR:", error);
-            console.log("FFMPEG STDERR:", stderr);
+    const gifPalleteGeneratePath = `uploads/palette-${req.file.filename}.png`;
+    const ffmpeg_progres_ = spawn(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}, palettegen`, gifPalleteGeneratePath]);
+
+    ffmpeg_progres_.on('close', function(code) {
+        console.log("PALETTE finished, code:", code);
+
+        const ffmpeg_progres_gif = spawn(ffmpegPath, ['-i', inputPath, '-i', gifPalleteGeneratePath, '-filter_complex', `scale=${FinalWidth}:${FinalHeight}[x];[x][1:v]paletteuse`, outputfile]);
+
+        ffmpeg_progres_gif.stderr.on('data', function(chunk) {
+            const match = chunk.toString().match(/time=(\d+):(\d+):(\d+\.\d+)/);
+            if (match) {
+                const currentSeconds = Number(match[1]) * 3600 + Number(match[2]) * 60 + Number(match[3]);
+                const convertProgressPercent = (currentSeconds / videoDuration) * 100;
+                if (progressConmections[conversionId]) {
+                    progressConmections[conversionId].write(`data: ${convertProgressPercent.toFixed(1)}\n\n`);
+                }
+            }
+        });
+
+        ffmpeg_progres_gif.on('close', function(code2) {
+            console.log('FFmpeg GIF finished, code:', code2);
             res.download(outputfile);
 
             fs.unlink(inputPath, function(err) {
-            if (err) console.log("Failed to delete input file", err);
+                if (err) console.log("Failed to delete input file", err);
+            });
+
+            fs.unlink(gifPalleteGeneratePath, function(err) {
+                if (err) console.log("Failed to delete palette file", err);
+            });
 
             setTimeout(function() {
-            fs.unlink(outputfile, function(err) {
-                if (err) console.log("Failed to delete output file:", err);
-            });
+                fs.unlink(outputfile, function(err) {
+                    if (err) console.log("Failed to delete output file:", err);
+                });
             }, 60000);
-
-        });
-
         });
     });
     } else {
