@@ -73,8 +73,15 @@ app.post('/convert', upload.single('video'), function(req, res) {
 
         ffmpegProcess.stderr.on('data', function(chunk) {
             console.log('LIVE CHUNK:', chunk.toString());
+            const match = chunk.toString().match(/time=(\d+):(\d+):(\d+\.\d+)/);
+            if (match) {
+            console.log(match);
+            const currentSeconds = Number(match[1]) * 3600 + Number(match[2]) * 60 + Number(match[3]);
+            const convertProgressPercent = (currentSeconds / videoDuration) * 100;
+            console.log("Progress:", convertProgressPercent.toFixed(1) + "%");
+            }
         });
-        
+
         ffmpegProcess.on('close', function(code) {
         console.log('FFmpeg finished, code:', code);
         res.download(outputfile);
