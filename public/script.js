@@ -53,7 +53,7 @@ convertbutton.addEventListener("click", async function() {
     function startDownload() {
         const a = document.createElement('a');
         a.href = downloadURL;
-        a.download = `finalfile.${fileformat.value}`;
+        a.download = `${conversionId}.${fileformat.value}`;
         a.click();  
     }
     startDownload();

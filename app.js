@@ -38,7 +38,7 @@ app.post('/convert', upload.single('video'), function(req, res) {
     const conversionId = req.body.conversionId;
     const nameParts = req.file.originalname.split('.');
     const basefileextenstion = nameParts[nameParts.length - 1];
-    const outputfile = `uploads/output-${req.file.filename}.${req.body.format}`;
+    const outputfile = `uploads/finalfile-${req.file.filename}.${req.body.format}`;
 
     execFile(ffmpeg_probe, ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height:format=duration', '-of', 'json', inputPath], function(error, stdout, stderr) {
         console.log("PROBE ERROR:", error);
@@ -69,6 +69,7 @@ app.post('/convert', upload.single('video'), function(req, res) {
 
     const gifPalleteGeneratePath = `uploads/palette-${req.file.filename}.png`;
     const ffmpeg_progres_ = spawn(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}, palettegen`, gifPalleteGeneratePath]);
+
 
     ffmpeg_progres_.on('close', function(code) {
         console.log("PALETTE finished, code:", code);
@@ -106,7 +107,14 @@ app.post('/convert', upload.single('video'), function(req, res) {
         });
     });
     } else {
-        const ffmpegProcess = spawn(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}`, outputfile]);
+        let ffmpegArgs = ['-i', inputPath]
+
+        if(req.body.resolution === 'default') {
+            ffmpegArgs.push(outputfile)
+        } else {
+            ffmpegArgs.push('-vf', `scale=${FinalWidth}:${FinalHeight}`, outputfile)
+        }
+        const ffmpegProcess = spawn(ffmpegPath, ffmpegArgs);
 
         ffmpegProcess.stderr.on('data', function(chunk) {
             console.log('LIVE CHUNK:', chunk.toString());
