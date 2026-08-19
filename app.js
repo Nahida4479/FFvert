@@ -67,15 +67,28 @@ app.post('/convert', upload.single('video'), function(req, res) {
         progressConmections[conversionId].write(`data: Generating Color Palette\n\n`);
     }
 
-    const gifPalleteGeneratePath = `uploads/palette-${req.file.filename}.png`;
-    const ffmpeg_progres_ = spawn(ffmpegPath, ['-i', inputPath, '-vf', `scale=${FinalWidth}:${FinalHeight}, palettegen`, gifPalleteGeneratePath]);
+    let palleteFilter;
+    if (req.body.resolution === 'default') {
+        palleteFilter = 'palettegen'
+    } else {
+        palleteFilter = `scale=${FinalWidth}:${FinalHeight}, palettegen`
+    }
 
+    const gifPalleteGeneratePath = `uploads/palette-${req.file.filename}.png`;
+    const ffmpeg_progres_ = spawn(ffmpegPath, ['-i', inputPath, '-vf', palleteFilter, gifPalleteGeneratePath]);
 
     ffmpeg_progres_.on('close', function(code) {
         console.log("PALETTE finished, code:", code);
+        let useFilter;
 
-        const ffmpeg_progres_gif = spawn(ffmpegPath, ['-i', inputPath, '-i', gifPalleteGeneratePath, '-filter_complex', `scale=${FinalWidth}:${FinalHeight}[x];[x][1:v]paletteuse`, outputfile]);
+        if(req.body.resolution === 'default') {
+            useFilter = '[0:v][1:v]paletteuse';
+        } else {
+            useFilter = `scale=${FinalWidth}:${FinalHeight}[x];[x][1:v]paletteuse`;
+        }
 
+        const ffmpeg_progres_gif = spawn(ffmpegPath, ['-i', inputPath, '-i', gifPalleteGeneratePath, '-filter_complex', useFilter, outputfile]);
+        
         ffmpeg_progres_gif.stderr.on('data', function(chunk) {
             const match = chunk.toString().match(/time=(\d+):(\d+):(\d+\.\d+)/);
             if (match) {
