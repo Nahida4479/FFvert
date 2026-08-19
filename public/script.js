@@ -16,7 +16,7 @@ const formatupload = document.getElementById('formatupload');
 convertbutton.addEventListener("click", async function() {
     optionsPanel.hidden = true;
     const useruploadfile = uploadfile.files[0];
-    const conversionId = Date.now() + "-" + Math.random().toString(36).slice(2);
+    const conversionId = `FFvert-${Date.now()}` + Math.random().toString(36).slice(2);
     console.log("Conversion ID:", conversionId);
 
     processContainer.style.display = 'block';
