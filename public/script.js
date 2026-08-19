@@ -98,10 +98,14 @@ uploadfile.addEventListener('change', function(){
     const fileName = uploadfile.files[0].name;
     if (fileName.length > 30) {
         selectedFileName.textContent = fileName.slice(0, 30) + '...';
-        formatupload.hidden = true;
     } else {
         selectedFileName.textContent = fileName;
-        formatupload.hidden = true
+    }
+
+    if (uploadfile.files[0].type.startsWith('video/')) {
+        console.log("Video file")
+    } else {
+        console.log("Image file")
     }
 
 });
