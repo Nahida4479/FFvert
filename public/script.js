@@ -13,6 +13,34 @@ const optionsPanel = document.getElementById('optionsPanel');
 const selectedFileName = document.getElementById('selectedFileName');
 const formatupload = document.getElementById('formatupload');
 
+const videoFormats = [
+    { value: 'gif', label: 'GIF' },
+    { value: 'mov', label: 'MOV' },
+    { value: 'mp3', label: 'MP3' },
+    { value: 'mp4', label: 'MP4' },
+    { value: 'avi', label: 'AVI' },
+    { value: 'MKV', label: 'MKV' },
+    { value: 'WMV', label: 'WMV' }
+];
+
+const imageFormats = [
+    { value: 'png', label: 'PNG' },
+    { value: 'jpg', label: 'JPG' },
+    { value: 'webp', label: 'WEBP' },
+    { value: 'bmp', label: 'BMP' }
+];
+
+function updateFormatoptions(formatsArray) {
+    fileformat.innerHTML = '';
+
+    formatsArray.forEach(function(format) {
+        const optionElement = document.createElement('option');
+        optionElement.value = format.value
+        optionElement.textContent = format.label;
+        fileformat.appendChild(optionElement)
+    })
+}
+
 convertbutton.addEventListener("click", async function() {
     optionsPanel.hidden = true;
     const useruploadfile = uploadfile.files[0];
@@ -104,9 +132,15 @@ uploadfile.addEventListener('change', function(){
 
     if (uploadfile.files[0].type.startsWith('video/')) {
         console.log("Video file")
+        videoresolutionlist.hidden = false
+        updateFormatoptions(videoFormats);
     } else {
         console.log("Image file")
+        videoresolutionlist.hidden = true;
+        updateFormatoptions(imageFormats);
     }
+
+
 
 });
 
@@ -130,3 +164,4 @@ dropzone.addEventListener('dragover', function(event) {
             uploadfile.dispatchEvent(new Event('change'));
     }
 });
+
