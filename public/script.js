@@ -51,11 +51,19 @@ convertbutton.addEventListener("click", async function() {
     videoresolutionlist.hidden = true;
     const useruploadfile = uploadfile.files[0];
 
+    try {
     if (isImageUpload) {
         await convertImage(useruploadfile);
     } else {
         await convertVideo(useruploadfile);
     }
+} catch (err) {
+    console.log('Conversion error')
+    alert("Something went wrong during conversion.")
+} finally {
+    convertbutton.disabled = false;
+    fileformat.disabled = false;
+}
 
 
 async function convertImage(useruploadfile) {
@@ -121,7 +129,7 @@ async function convertVideo(useruploadfile) {
     }
     };  
 
-
+try {
     const formDatatoServer = new FormData();
     formDatatoServer.append('video', useruploadfile); // User upload file
     formDatatoServer.append('resolution', videoresolutionlist.value); 
@@ -152,6 +160,9 @@ async function convertVideo(useruploadfile) {
     hideButtonTime = setTimeout(function() {
         outputdownloadbutton.hidden = true;
     }, 60000);
+} finally {
+    eventSource.close();
+}
 }
 
 });
