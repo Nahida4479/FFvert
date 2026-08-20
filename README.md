@@ -12,7 +12,9 @@ A simple web app for converting video files - upload a video, pick a format and 
 - Drag & drop or click-to-browse file upload
 - Automatic cleanup of temporary files on the server
 
-## Supported formats
+---
+
+## Supported video formats
 
 | Format | Extension |
 |---|---|
@@ -24,9 +26,25 @@ A simple web app for converting video files - upload a video, pick a format and 
 | Matroska | `.mkv` |
 | Windows Media Video | `.wmv` |
 
-## Resolution & orientation
+## Video resolution & orientation
 
 Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
+
+---
+
+## Supported image formats
+| Format |
+|---|
+| `.png` |
+| `.jpg`|
+| `.webp` |
+| `.bmp`|
+| `.tiff` |
+| `.ico` |
+| `.qoi` |
+
+
+---
 
 ## Installation
 
