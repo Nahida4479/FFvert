@@ -12,6 +12,7 @@ const dropzone = document.getElementById('dropzone');
 const optionsPanel = document.getElementById('optionsPanel');
 const selectedFileName = document.getElementById('selectedFileName');
 const formatupload = document.getElementById('formatupload');
+let isImageUpload = false;
 
 const videoFormats = [
     { value: 'gif', label: 'GIF' },
@@ -47,6 +48,61 @@ function updateFormatoptions(formatsArray) {
 convertbutton.addEventListener("click", async function() {
     optionsPanel.hidden = true;
     const useruploadfile = uploadfile.files[0];
+
+    if (isImageUpload) {
+        await convertImage(useruploadfile);
+    } else {
+        await convertVideo(useruploadfile);
+    }
+
+
+async function convertImage(useruploadfile) {
+    processContainer.style.display = 'block';
+    progressBar.style.width = '100%';
+    progressText.textContent = 'Converting...';
+
+    const formDataToServer = new FormData();
+    formDataToServer.append('image', useruploadfile);
+    formDataToServer.append('format', fileformat.value)
+
+    const response = await fetch('/convert-image', {
+        method: 'POST',
+        body: formDataToServer
+    });
+
+    processContainer.style.display = 'none';
+
+    if (!response.ok) {
+        alert("Conversion failed.")
+        return;
+    }
+
+    const outputBlob = await response.blob();
+    const downloadURL = URL.createObjectURL(outputBlob);
+    const originalName = useruploadfile.name.split('.').slice(0, -1).join('.') || 'converted';
+
+    function startDownload() {
+        const a = document.createElement('a');
+        a.href = downloadURL;
+        a.download = `${originalName}.${fileformat.value}`;
+        a.click();
+    }
+    outputdownloadbutton.hidden = false;
+    startDownload();
+
+    outputdownloadbutton.onclick = startDownload;
+
+    clearTimeout(hideButtonTime);
+    hideButtonTime = setTimeout(() => {
+        outputdownloadbutton.hidden = true;
+    }, 60000);
+}
+
+
+async function convertVideo(useruploadfile) {
+    
+
+
     const conversionId = `FFvert-${Date.now()}` + Math.random().toString(36).slice(2);
     console.log("Conversion ID:", conversionId);
 
@@ -88,16 +144,13 @@ convertbutton.addEventListener("click", async function() {
         a.click();  
     }
     startDownload();
-
-    outputdownloadbutton.addEventListener("click", function() {
-        startDownload();
-    });
+    outputdownloadbutton.onclick = startDownload;
 
     clearTimeout(hideButtonTime);
     hideButtonTime = setTimeout(function() {
         outputdownloadbutton.hidden = true;
     }, 60000);
-
+}
 
 });
 
@@ -134,11 +187,13 @@ uploadfile.addEventListener('change', function(){
     }
 
     if (uploadfile.files[0].type.startsWith('video/')) {
+        isImageUpload = false;
         console.log("Video file")
         videoresolutionlist.hidden = false
         updateFormatoptions(videoFormats);
     } else {
         console.log("Image file")
+        isImageUpload = true;
         videoresolutionlist.hidden = true;
         updateFormatoptions(imageFormats);
     }
