@@ -187,6 +187,7 @@ display: none;
   cursor: pointer;
   transition: border-color 0.2s ease;
   color: var(--color-white);
+  perspective: 500px;
 }
 
 .dropzone:hover {
@@ -200,6 +201,25 @@ display: none;
 
 .dropzone-sub[hidden] {
   display: none;
+}
+
+#dropzone-sub {
+  animation: anim 3s ease-in-out infinite;
+}
+
+@keyframes anim {
+    0% {
+      transform: translateY(0px) translateZ(0px);
+    }
+    50% {
+      transform: translateY(10px) translateZ(50px);
+
+    }
+
+    100% {
+      transform: translateY(0px) translateZ(0px);
+
+    }
 }
 
 @media (max-width: 600px) {

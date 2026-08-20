@@ -46,7 +46,9 @@ function updateFormatoptions(formatsArray) {
 }
 
 convertbutton.addEventListener("click", async function() {
-    optionsPanel.hidden = true;
+    convertbutton.disabled = true;
+    fileformat.disabled = true;
+    videoresolutionlist.hidden = true;
     const useruploadfile = uploadfile.files[0];
 
     if (isImageUpload) {
