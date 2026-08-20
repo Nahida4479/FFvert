@@ -178,6 +178,69 @@ app.get('/progress/:conversionId', function(req, res) {
 });
 
 
+const validImageFormats = ['png', 'jpg', 'webp', 'bmp', 'tiff', 'ico', 'qoi']
+
+app.post('/convert-image', upload.single('image'), function(req, res) {
+    if (!req.file) {
+        req.status(400).send("No file uploaded!")
+        return;
+    }
+
+    const targetFormat = req.body.format;
+
+    if (!validImageFormats.includes(targetFormat)) {
+        fs.unlink(req.file.path, (err) => {
+            if (err) console.log(`Failed to d;elete input file ${err}`)
+        });
+    res.status(400).send(`Unsupported target format: ${targetFormat}`);
+    return;
+    }
+
+    const inputPath = req.file.path;
+    const outputFile = `uploads/finalfile-${req.file.filename}.${targetFormat}`;
+
+    let ffmpegArgs = ['-i', inputPath];
+
+    if (req.body.resolution && req.body.resolution !== 'default') {
+        const [targetWidth, targetHeigt] = req.body.resolution.split('x');
+        ffmpegArgs.push('-vf', `scale=${targetWidth}:${targetHeigt}`);
+    }
+
+    if (targetFormat === 'jpg' || targetFormat === 'jpeg') {
+        ffmpegArgs.push('-pix_fmt', 'yuvj420p');
+    }
+
+    ffmpegArgs.push(outputFile);
+
+    const ffmpegProcess = spawn(ffmpegPath, ffmpegArgs);
+
+    let ffmpegStderr = '';
+    ffmpegProcess.stderr.on('data', (chunk) => {
+        ffmpegStderr += chunk.toString();
+    });
+
+    ffmpegProcess.on('close', (code) => {
+        console.log(`FFmpeg image conversion finished ${code}`);
+
+        if (code !== 0) {
+            console.log('FFmpeg stderr:', ffmpegStderr);
+            res.status(500).send("Conversion failed: This format combination might not be supported.")
+        } else {
+            res.download(outputFile)
+        }
+
+        fs.unlink(inputPath, (err) => {
+            if (err) console.log("Failed to delete input file", err);
+        });
+
+        setTimeout(() => {
+            fs.unlink(outputFile, (err) => {
+                if (err) console.log('Failed to delete output file', err);
+            });
+        }, 60000);
+    })
+});
+
 app.listen(3003, () => {
     console.log("Active: Port 3003")
 })

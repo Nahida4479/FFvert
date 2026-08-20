@@ -27,7 +27,10 @@ const imageFormats = [
     { value: 'png', label: 'PNG' },
     { value: 'jpg', label: 'JPG' },
     { value: 'webp', label: 'WEBP' },
-    { value: 'bmp', label: 'BMP' }
+    { value: 'bmp', label: 'BMP' },
+    { value: 'tiff', label: 'TIFF'}, 
+    { value: 'ico', label: 'ICO'},
+    { value: 'qoi', label: 'QOI'}
 ];
 
 function updateFormatoptions(formatsArray) {
