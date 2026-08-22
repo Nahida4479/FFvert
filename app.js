@@ -249,7 +249,8 @@ app.post('/convert-image', upload.single('image'), function(req, res) {
                 if (err) console.log('Failed to delete output file', err);
             });
         }, 60000)
-    })
+    }) 
+
 }
 });
 
