@@ -25,6 +25,24 @@ h1 {
   font-size: 40px;
 }
 
+.progress-bar.pulsing {
+  width: 30%;
+  animation: pulseLoading 1.2s ease-in-out infinite;
+}
+
+@keyframes pulseLoading {
+  0%{
+    margin-left: 0%;
+  }
+  50% {
+    margin-left: 70%;
+  }
+
+  100% {
+    margin-left: 0%;
+  }
+}
+
 .button-27 {
   appearance: none;
   background-color: var(--color-black);

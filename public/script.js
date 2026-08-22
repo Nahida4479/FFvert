@@ -64,13 +64,20 @@ convertbutton.addEventListener("click", async function() {
 } finally {
     convertbutton.disabled = false;
     fileformat.disabled = false;
-}
+}  
 
 
 async function convertImage(useruploadfile) {
     processContainer.style.display = 'block';
     progressBar.style.width = '100%';
+
+    if (fileformat.value === 'removebackground') {
+        progressText.textContent = 'Removing background'
+        progressBar.style.width = '';
+        progressBar.classList.add('pulsing')
+    } else {
     progressText.textContent = 'Converting...';
+    }
 
     const formDataToServer = new FormData();
     formDataToServer.append('image', useruploadfile);

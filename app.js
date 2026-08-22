@@ -189,20 +189,11 @@ app.post('/convert-image', upload.single('image'), function(req, res) {
     }
 
     const targetFormat = req.body.format;
-
-    if (!validImageFormats.includes(targetFormat)) {
-        fs.unlink(req.file.path, (err) => {
-            if (err) console.log(`Failed to d;elete input file ${err}`)
-        });
-    res.status(400).send(`Unsupported target format: ${targetFormat}`);
-    return;
-    }
-
     const inputPath = req.file.path;
     const outputFile = `uploads/finalfile-${req.file.filename}.${targetFormat}`;
 
     if (targetFormat === 'removebackground') {
-        removeBackgroud(inputPath).then((blob) => {
+        removeBackground(inputPath).then((blob) => {
                 return blob.arrayBuffer();
         }).then((arrayBuffer) => {
             const buffer = Buffer.from(arrayBuffer);
