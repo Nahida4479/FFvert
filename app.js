@@ -7,6 +7,8 @@ const upload = multer({ dest: 'uploads/'});
 const app = express();
 const fs = require('fs');
 const progressConmections = {};
+const { removeBackground } = require('@imgly/background-removal-node');
+const { arrayBuffer } = require('stream/consumers');
 
 if (!fs.existsSync('uploads/')) {
     try {
@@ -199,6 +201,23 @@ app.post('/convert-image', upload.single('image'), function(req, res) {
     const inputPath = req.file.path;
     const outputFile = `uploads/finalfile-${req.file.filename}.${targetFormat}`;
 
+    if (targetFormat === 'removebackground') {
+        removeBackgroud(inputPath).then((blob) => {
+                return blob.arrayBuffer();
+        }).then((arrayBuffer) => {
+            const buffer = Buffer.from(arrayBuffer);
+            res.set('Content-Type', 'image/png');
+            res.send(buffer);
+
+            fs.unlink(inputPath, (err) => {
+                if (err) console.log("Failed to delete input file" , err);
+            });
+        }).catch((err) => {
+            console.log('Background removal failed', err)
+            res.status(500).send("Background removal failed")
+        })
+
+    } else {
     let ffmpegArgs = ['-i', inputPath];
 
     if (req.body.resolution && req.body.resolution !== 'default') {
@@ -228,6 +247,7 @@ app.post('/convert-image', upload.single('image'), function(req, res) {
         } else {
             res.download(outputFile)
         }
+    
 
         fs.unlink(inputPath, (err) => {
             if (err) console.log("Failed to delete input file", err);
@@ -239,8 +259,10 @@ app.post('/convert-image', upload.single('image'), function(req, res) {
             });
         }, 60000)
     })
+}
 });
+
 
 app.listen(3003, () => {
     console.log("Active: Port 3003")
-})
+})  

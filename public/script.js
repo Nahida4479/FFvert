@@ -31,7 +31,7 @@ const imageFormats = [
     { value: 'bmp', label: 'BMP' },
     { value: 'tiff', label: 'TIFF'}, 
     { value: 'ico', label: 'ICO'},
-    { value: 'qoi', label: 'QOI'}
+    { value: 'qoi', label: 'QOI'},
     { value: 'removebackground', label: 'Remove background'}
 ];
 
