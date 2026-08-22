@@ -32,6 +32,7 @@ const imageFormats = [
     { value: 'tiff', label: 'TIFF'}, 
     { value: 'ico', label: 'ICO'},
     { value: 'qoi', label: 'QOI'}
+    { value: 'removebackground', label: 'Remove background'}
 ];
 
 function updateFormatoptions(formatsArray) {
