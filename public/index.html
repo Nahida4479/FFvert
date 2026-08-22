@@ -6,10 +6,13 @@
     <title>FFvert</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="background-color: rgb(82, 61, 61);">
-<h1 style="text-align: center;">FFvert</h1>
+<body>
+
 <main style="text-align: center;">
-<div id="dropzone" class="dropzone">
+
+  <div id="ffvert_panel">
+    <h1 id="FFvert_text">FFvert</h1>
+    <div id="dropzone" class="dropzone">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="48" height="48">
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
     <polyline points="17 8 12 3 7 8"/>
@@ -19,9 +22,13 @@
   <p class="dropzone-sub" id="dropzone-sub">MP4, MOV, PNG, JPG and more</p>
   <p id="selectedFileName" class="dropzone-sub"></p>
 </div>
+
+
+
 <input type="file" id="fileinput" accept="video/*, image/*" hidden>
 
 <div id="optionsPanel" class="options-panel" hidden>
+
   <select id="formatselect" class="select-style">
     <option value="gif">GIF</option>
     <option value="mov">MOV</option>
@@ -41,13 +48,15 @@
   </select>
   <button id="conbutton" class="select-style">Convert</button>
   <button id="downloadoutput" class="select-style" hidden>Download</button>
-</div>
 
-<div id="progressContainer" class="progress-container">
+  <div id="progressContainer" class="progress-container">
   <div id="progressBar" class="progress-bar"></div>
   <span id="progressText" class="progress-text"></span>
 </div>
 <p id="funfact" class="infobox"></p>
+</div>
+  </div>
+
         
     <script src="script.js" type="module"></script>
 </body>

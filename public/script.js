@@ -236,3 +236,13 @@ dropzone.addEventListener('dragover', function(event) {
     }
 });
 
+const logoText = document.getElementById("FFvert_text");
+
+setInterval(function() {
+    logoText.classList.add('glitch');
+
+    setTimeout(function() {
+        logoText.classList.remove('glitch')
+    }, 300)
+}, 100)
+
