@@ -79,6 +79,7 @@ async function convertImage(useruploadfile) {
     progressText.textContent = 'Converting...';
     }
 
+    try {
     const formDataToServer = new FormData();
     formDataToServer.append('image', useruploadfile);
     formDataToServer.append('format', fileformat.value)
@@ -114,6 +115,10 @@ async function convertImage(useruploadfile) {
     hideButtonTime = setTimeout(() => {
         outputdownloadbutton.hidden = true;
     }, 60000);
+} finally {
+    processContainer.style.display = 'none';
+    progressBar.classList.remove('pulsing')
+}
 }
 
 
