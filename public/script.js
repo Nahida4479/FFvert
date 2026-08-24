@@ -266,8 +266,7 @@ setInterval(function() {
 
 
 ytOkButton.addEventListener('click',async () => {
-    const conversionId = `FFvert-${generateRandomId(10)}`;
-
+    const conversionId = `FFvert-${Date.now()}` + Math.random().toString(36).slice(2);
     const eventSource = new EventSource(`/progress/` + conversionId);
     eventSource.onmessage = function(event) {
         progressBar.style.width = event.data + '%';

@@ -256,7 +256,7 @@ app.post('/convert-image', upload.single('image'), function(req, res) {
 }
 });
 
-app.post(`/download-youtube`, async function (req, res) {
+app.post(`/download-youtube`, upload.none(), async function (req, res) {
     const link = req.body.link;
     const format = req.body.format;
     const resolution = req.body.resolution;
@@ -272,19 +272,7 @@ app.post(`/download-youtube`, async function (req, res) {
         const originalWidth = probeData.streams[0].width
         const originalHeight = probeData.streams[0].height
         const videoDuration = Number(probeData.format.duration);
-        const selectResolution = req.body.resolution.split("x")
-        const selectResolutionWidth = Number(selectResolution[0]);
-        const selectResolutionHeight = Number(selectResolution[1]);
-        let FinalWidth;
-        let FinalHeight;
-
-        if ((originalHeight > originalWidth) ) {
-            FinalWidth = selectResolutionHeight;
-            FinalHeight = selectResolutionWidth;
-        } else {
-            FinalWidth = selectResolutionWidth;
-            FinalHeight = selectResolutionHeight
-        }
+       
 
 
         if (req.body.format === "gif") {
@@ -292,26 +280,13 @@ app.post(`/download-youtube`, async function (req, res) {
         progressConmections[conversionId].write(`data: Generating Color Palette\n\n`);
     }
 
-    let palleteFilter;
-    if (req.body.resolution === 'default') {
-        palleteFilter = 'palettegen'
-    } else {
-        palleteFilter = `scale=${FinalWidth}:${FinalHeight}, palettegen`
-    }
-
-    const gifPalleteGeneratePath = `uploads/palette-${req.file.filename}.png`;
+    let palleteFilter = 'palettegen';
+    const gifPalleteGeneratePath = `uploads/palette-${crypto.randomUUID()}.png`;
     const ffmpeg_progres_ = spawn(ffmpegPath, ['-i', downloadedPath, '-vf', palleteFilter, gifPalleteGeneratePath]);
 
     ffmpeg_progres_.on('close', function(code) {
         console.log("PALETTE finished, code:", code);
-        let useFilter;
-
-        if(req.body.resolution === 'default') {
-            useFilter = '[0:v][1:v]paletteuse';
-        } else {
-            useFilter = `scale=${FinalWidth}:${FinalHeight}[x];[x][1:v]paletteuse`;
-        }
-
+        let useFilter = '[0:v][1:v]paletteuse';
         const ffmpeg_progres_gif = spawn(ffmpegPath, ['-i', downloadedPath, '-i', gifPalleteGeneratePath, '-filter_complex', useFilter, outputfile]);
         
         ffmpeg_progres_gif.stderr.on('data', function(chunk) {
@@ -347,11 +322,7 @@ app.post(`/download-youtube`, async function (req, res) {
     } else {
         let ffmpegArgs = ['-i', downloadedPath]
 
-        if(req.body.resolution === 'default') {
             ffmpegArgs.push(outputfile)
-        } else {
-            ffmpegArgs.push('-vf', `scale=${FinalWidth}:${FinalHeight}`, outputfile)
-        }
         const ffmpegProcess = spawn(ffmpegPath, ffmpegArgs);
 
         ffmpegProcess.stderr.on('data', function(chunk) {
