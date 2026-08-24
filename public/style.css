@@ -448,6 +448,15 @@ text-align-last: center;
 appearance: none;
 }
 
+#yt-dlp-select:focus {
+  outline: none;
+}
+
+#yt-dlp-resolution:focus {
+  outline: none;
+}
+
+
 #yt-dlp-resolution {
 background-color: #000000;
 color: white;
@@ -486,12 +495,54 @@ appearance: none;
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: 15px;
 }
 
-#yt-dlp-link-panel:focus-within {
-box-shadow: 0 0 0 3px black;
+
+#yt-dlp-how-to-you {
+  background-color: #ffffff;
+  width: 75%;
+  height: 350px;
+  border: 2px dashed red;
+  border-radius: 50px;
+  text-align: center;
+  margin: 20px auto;
+  text-align: left;
+  padding-left: 30px;
 }
 
+#yt-dlp-description {
+display: flex;
+flex-direction: column;
+align-items: right;
+gap: 13px;
+}
+
+#yt-dlp-description p {
+  margin: 0;
+}
+
+#yt-dlp-description svg {
+  flex-shrink: 0;
+}
+
+#yt-dlp-d1 {
+display: flex;
+gap: 5px;
+flex-direction: column;
+}
+
+#yt-dlp-d2 {
+display: flex;
+gap: 5px;
+flex-direction: column;
+}
+
+#yt-dlp-d3 {
+display: flex;
+gap: 5px;
+flex-direction: column;
+}
 
 
 
