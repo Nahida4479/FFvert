@@ -13,6 +13,10 @@ const optionsPanel = document.getElementById('optionsPanel');
 const selectedFileName = document.getElementById('selectedFileName');
 const formatupload = document.getElementById('formatupload');
 let isImageUpload = false;
+const ytOkButton = document.getElementById('yt-dlp-ok');
+const ytLinkInput = document.getElementById('yt-dlp-link-button');
+const ytFormatSelect = document.getElementById('yt-dlp-select');
+const ytResolutionSelect = document.getElementById('yt-dlp-resolution');
 
 const videoFormats = [
     { value: 'gif', label: 'GIF' },
@@ -258,4 +262,41 @@ setInterval(function() {
         logoText.classList.remove('glitch')
     }, 300)
 }, 100)
+
+
+
+ytOkButton.addEventListener('click',async () => {
+    const conversionId = `FFvert-${generateRandomId(10)}`;
+
+    const eventSource = new EventSource(`/progress/` + conversionId);
+    eventSource.onmessage = function(event) {
+        progressBar.style.width = event.data + '%';
+        progressText.textContent = event.data + "%";   
+    };
+
+    try{
+
+    const formData = new FormData();
+    formData.append('link', ytLinkInput.value)
+    formData.append('format', ytFormatSelect.value)
+    formData.append('resolution', ytResolutionSelect.value)
+    formData.append('conversionId', conversionId);
+
+    const response = await fetch('/download-youtube', {
+        method: 'POST',
+        body: formData
+    });
+
+    const outputBlob = await response.blob();
+    const downloadURL = URL.createObjectURL(outputBlob)
+    const a = document.createElement('a');
+    a.href = downloadURL;
+    a.download = `FFvert-${Date.now()}.${ytFormatSelect.value}`;
+    a.click()
+
+} finally {
+    eventSource.close();
+}
+})
+
 
