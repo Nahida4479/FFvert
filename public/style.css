@@ -272,7 +272,7 @@ display: none;
     "dropzone title"
     "dropzone options";
   gap: 20px;
-  background-color: white;
+  background-color: rgb(211, 166, 253);
   width: 1000px;
   min-height: 500px;
   border-radius: 50px;
@@ -378,8 +378,9 @@ display: none;
   width: 500px;
   min-height: 547px;
   border-radius: 50px;
-  border: 3px dashed var(--color-purple);
-  background-color: white;
+  border: 3px dashed red;
+  background-color: rgb(255, 125, 125);
+
 
 }
 
@@ -397,15 +398,99 @@ animation: glitchEffect_ytdlp 2s ease-in-out infinite;
 }
 
 #yt-dlp-link-button {
-  width: 70%;
-  background-color: #333;
-  color: white;
+  width: 60%;
+  color: rgb(247, 247, 248);
   font-weight: bold;
-  height: 30px;
+  height: 45px;
   border: 2px solid black;
   border-radius: 50px;
+  background-image: url(./icons/yt-dlp-background.png);
+  box-sizing: border-box;
+  background-image: url(icons/circle-check.svg);
+  background-repeat: no-repeat;
+  background-position: 16px center;
+  background-size: 20px;
+  padding-left: 40px;
+  box-sizing: border-box; 
+  background-color: red;
+  padding-right: 20px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  line-height: 41px;
 }
 
+#yt-dlp-link-button:focus {
+  outline: none;
+  border-color: black;
+  box-shadow: 0 0 0 3px rgb(255, 125, 125);
+}
+
+
+#yt-dlp-link-button::placeholder {
+  color: white;
+  font-weight: 700;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.5px;
+}
+
+#yt-dlp-select {
+background-color: #000000;
+color: white;
+border-radius: 9px;
+height: 40px;
+text-align: center;
+outline: none;
+border: 1px solid  red;
+font-weight: bold;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+font-size: 15px;
+line-height: 30px;
+text-align-last: center;
+appearance: none;
+}
+
+#yt-dlp-resolution {
+background-color: #000000;
+color: white;
+border-radius: 9px;
+height: 40px;
+width: 60px;
+text-align: center;
+outline: none;
+border: 1px solid  red;
+font-weight: bold;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+font-size: 15px;
+line-height: 30px;
+text-align-last: center;
+appearance: none;
+}
+
+#yt-dlp-ok {
+background-color: rgb(100, 9, 9);
+color: white;
+border-radius: 9px;
+height: 40px;
+width: 45px;
+text-align: center;
+outline: none;
+border: 1px solid  black;
+font-weight: bold;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+font-size: 15px;
+line-height: 30px;
+text-align-last: center;
+appearance: none;
+}
+
+#yt-dlp-link-panel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#yt-dlp-link-panel:focus-within {
+box-shadow: 0 0 0 3px black;
+}
 
 
 
