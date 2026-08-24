@@ -9,6 +9,8 @@ const fs = require('fs');
 const progressConmections = {};
 const { removeBackground } = require('@imgly/background-removal-node');
 const { arrayBuffer } = require('stream/consumers');
+const { downloadVideo } = require('./services/yt-dlp');
+const crypto = require('crypto')
 
 if (!fs.existsSync('uploads/')) {
     try {
@@ -254,6 +256,137 @@ app.post('/convert-image', upload.single('image'), function(req, res) {
 }
 });
 
+app.post(`/download-youtube`, async function (req, res) {
+    const link = req.body.link;
+    const format = req.body.format;
+    const resolution = req.body.resolution;
+
+    const downloadedPath = await downloadVideo(link, resolution);
+    const outputfile = `uploads/FFvert-${crypto.randomUUID()}.${req.body.format}`
+    const conversionId = req.body.conversionId;
+
+     execFile(ffmpeg_probe, ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height:format=duration', '-of', 'json', downloadedPath], function(error, stdout, stderr) {
+        console.log("PROBE ERROR:", error);
+        console.log("PROBE STDOUT:", stdout);
+        const probeData = JSON.parse(stdout);
+        const originalWidth = probeData.streams[0].width
+        const originalHeight = probeData.streams[0].height
+        const videoDuration = Number(probeData.format.duration);
+        const selectResolution = req.body.resolution.split("x")
+        const selectResolutionWidth = Number(selectResolution[0]);
+        const selectResolutionHeight = Number(selectResolution[1]);
+        let FinalWidth;
+        let FinalHeight;
+
+        if ((originalHeight > originalWidth) ) {
+            FinalWidth = selectResolutionHeight;
+            FinalHeight = selectResolutionWidth;
+        } else {
+            FinalWidth = selectResolutionWidth;
+            FinalHeight = selectResolutionHeight
+        }
+
+
+        if (req.body.format === "gif") {
+    if (progressConmections[conversionId]) {
+        progressConmections[conversionId].write(`data: Generating Color Palette\n\n`);
+    }
+
+    let palleteFilter;
+    if (req.body.resolution === 'default') {
+        palleteFilter = 'palettegen'
+    } else {
+        palleteFilter = `scale=${FinalWidth}:${FinalHeight}, palettegen`
+    }
+
+    const gifPalleteGeneratePath = `uploads/palette-${req.file.filename}.png`;
+    const ffmpeg_progres_ = spawn(ffmpegPath, ['-i', downloadedPath, '-vf', palleteFilter, gifPalleteGeneratePath]);
+
+    ffmpeg_progres_.on('close', function(code) {
+        console.log("PALETTE finished, code:", code);
+        let useFilter;
+
+        if(req.body.resolution === 'default') {
+            useFilter = '[0:v][1:v]paletteuse';
+        } else {
+            useFilter = `scale=${FinalWidth}:${FinalHeight}[x];[x][1:v]paletteuse`;
+        }
+
+        const ffmpeg_progres_gif = spawn(ffmpegPath, ['-i', downloadedPath, '-i', gifPalleteGeneratePath, '-filter_complex', useFilter, outputfile]);
+        
+        ffmpeg_progres_gif.stderr.on('data', function(chunk) {
+            const match = chunk.toString().match(/time=(\d+):(\d+):(\d+\.\d+)/);
+            if (match) {
+                const currentSeconds = Number(match[1]) * 3600 + Number(match[2]) * 60 + Number(match[3]);
+                const convertProgressPercent = (currentSeconds / videoDuration) * 100;
+                if (progressConmections[conversionId]) {
+                    progressConmections[conversionId].write(`data: ${convertProgressPercent.toFixed(1)}\n\n`);
+                }
+            }
+        });
+
+        ffmpeg_progres_gif.on('close', function(code2) {
+            console.log('FFmpeg GIF finished, code:', code2);
+            res.download(outputfile);
+
+            fs.unlink(downloadedPath, function(err) {
+                if (err) console.log("Failed to delete input file", err);
+            });
+
+            fs.unlink(gifPalleteGeneratePath, function(err) {
+                if (err) console.log("Failed to delete palette file", err);
+            });
+
+            setTimeout(function() {
+                fs.unlink(outputfile, function(err) {
+                    if (err) console.log("Failed to delete output file:", err);
+                });
+            }, 60000);
+        });
+    });
+    } else {
+        let ffmpegArgs = ['-i', downloadedPath]
+
+        if(req.body.resolution === 'default') {
+            ffmpegArgs.push(outputfile)
+        } else {
+            ffmpegArgs.push('-vf', `scale=${FinalWidth}:${FinalHeight}`, outputfile)
+        }
+        const ffmpegProcess = spawn(ffmpegPath, ffmpegArgs);
+
+        ffmpegProcess.stderr.on('data', function(chunk) {
+            console.log('LIVE CHUNK:', chunk.toString());
+            const match = chunk.toString().match(/time=(\d+):(\d+):(\d+\.\d+)/);
+            if (match) {
+            console.log(match);
+            const currentSeconds = Number(match[1]) * 3600 + Number(match[2]) * 60 + Number(match[3]);
+            const convertProgressPercent = (currentSeconds / videoDuration) * 100;
+            console.log("Progress:", convertProgressPercent.toFixed(1) + "%");
+
+
+            if (progressConmections[conversionId]) {
+                progressConmections[conversionId].write(`data: ${convertProgressPercent.toFixed(1)}\n\n`);
+            }
+            }
+        });
+
+        ffmpegProcess.on('close', function(code) {
+        console.log('FFmpeg finished, code:', code);
+        res.download(outputfile);
+
+        fs.unlink(downloadedPath, function(err) {
+            if (err) console.log("Failed to delete input file", err);
+
+            setTimeout(function() {
+            fs.unlink(outputfile, function(err) {
+                if (err) console.log("Failed to delete output file:", err);
+            });
+            }, 60000);
+        });
+    }); 
+}
+})
+})
 
 app.listen(3003, () => {
     console.log("Active: Port 3003")
