@@ -54,6 +54,7 @@ A simple web app for converting video and image files, and downloading YouTube v
 | Windows Media Video | `.wmv` |
 
 Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
+>**Note:** "The GIF format additionally generates PNG palette for better GIF video colors"
 
 ---
 
@@ -70,6 +71,25 @@ Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 | `.qoi` |
 
 ---
+
+## YouTube Downloader supported output formats
+| Format |
+|---|
+| `MP4` | 
+| `MP3` | 
+| `MOV` | 
+| `GIF` |  
+| `MKV` | 
+| `WEBM` | 
+| `AAC` | 
+| `M4A` | 
+| `FLAC` | 
+| `WAV` | 
+| `OPUS` | 
+| `VORBIS` |
+
+>**Note:** "The GIF format additionally generates PNG palette for better GIF video colors"
+
 
 ## FFvert image background removal system
 
@@ -96,7 +116,7 @@ node app.js
 ```
 
 Then open your browser at:
-`http://localhost:3003
+`http://localhost:3003`
 
 ## Requirements
 
