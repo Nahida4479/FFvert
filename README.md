@@ -33,11 +33,11 @@ A simple web app for converting video and image files, and downloading YouTube v
 
 <img src="./public/image/Yt-downloader.png" width="500">
 
-| Step | Preview |
+| Step |
 |---|---|
-| **1.** Paste your YouTube video link (YouTube Shorts are supported) | |
-| **2.** Select a format and resolution | <img src="./public/image/FormatandResolution_yt.png" width="300" height="150"> |
-| **3.** Click `OK` and wait for your video file | |
+| **1.** Paste your YouTube video link (YouTube Shorts are supported) 
+| **2.** Select a format and resolution 
+| **3.** Click `OK` and wait for your video file 
 
 ---
 
