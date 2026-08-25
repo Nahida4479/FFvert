@@ -39,6 +39,7 @@ A simple web app for converting video and image files, and downloading YouTube v
 | **2.** Select a format and resolution 
 | **3.** Click `OK` and wait for your video file 
 
+# Supported formats
 
 ## FFvert supported video formats and resolutions
 
