@@ -39,7 +39,6 @@ A simple web app for converting video and image files, and downloading YouTube v
 | **2.** Select a format and resolution 
 | **3.** Click `OK` and wait for your video file 
 
----
 
 ## FFvert supported video formats and resolutions
 
@@ -56,7 +55,6 @@ A simple web app for converting video and image files, and downloading YouTube v
 Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 > **Note:** The GIF format additionally generates a color palette for better color accuracy.
 
----
 
 ## FFvert supported image formats
 
@@ -70,7 +68,6 @@ Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 | `.ico` |
 | `.qoi` |
 
----
 
 ## YouTube Downloader supported output formats
 | Format |
@@ -90,11 +87,12 @@ Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 
 > **Note:** The GIF format additionally generates a color palette for better color accuracy.
 
+---
+
 ## FFvert image background removal system
 
 The background removal system is based on the `@imgly/background-removal-node` package. The AI model `isnet_fp16` is downloaded from IMG.LY servers and runs locally.
 
----
 
 ## YouTube video downloader
 
