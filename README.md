@@ -8,48 +8,40 @@ A simple web app for converting video and image files, and downloading YouTube v
 
 <img src="./public/image/FFvert_README.png" width="500">
 
-1. Upload your video file.
-2. Select video format.
-
-![Format](./public/image/Format.png)
-
-3. Select video resolution.
-
-![Resolution](./public/image/Resolution.png)
-
-4. Click `Convert` and wait for convert finish.
-
-![Convert](./public/image/Convert-process.png)
+| Step | Preview |
+|---|---|
+| **1.** Upload your video file | |
+| **2.** Select a video format | <img src="./public/image/Format.png" width="300"> |
+| **3.** Select a video resolution | <img src="./public/image/Resolution.png" width="300"> |
+| **4.** Click `Convert` and wait for the conversion to finish | <img src="./public/image/Convert-process.png" width="300"> |
 
 ---
 
 ## Image Conversion
 
-![FFvert](./public/image/FFvert_image.png)
+<img src="./public/image/FFvert_image.png" width="500">
 
-1. Upload your image file.
-2. Select image format or the `Remove background` option.
-
-![Format](./public/image/Format_image.png)
-
-3. Click `Convert` and wait for finish.
+| Step | Preview |
+|---|---|
+| **1.** Upload your image file | |
+| **2.** Select an image format or the `Remove background` option | <img src="./public/image/Format_image.png" width="300"> |
+| **3.** Click `Convert` and wait for the conversion to finish | |
 
 ---
 
 ## YouTube Video Downloader
 
-![Downloader](./public/image/Yt-downloader.png)
+<img src="./public/image/Yt-downloader.png" width="500">
 
-1. Paste your YouTube video link (YouTube shorts video is supported).
-2. Select format and resolution.
+| Step | Preview |
+|---|---|
+| **1.** Paste your YouTube video link (YouTube Shorts are supported) | |
+| **2.** Select a format and resolution | <img src="./public/image/FormatandResolution_yt.png" width="300"> |
+| **3.** Click `OK` and wait for your video file | |
 
-![Format and Resolution](./public/image/FormatandResolution_yt.png)
+---
 
-3. Click `OK` and wait for your video file.
-
-
-
-## FFvert supported video formats and resolution
+## FFvert supported video formats and resolutions
 
 | Format | Extension |
 |---|---|
@@ -66,25 +58,28 @@ Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 ---
 
 ## FFvert supported image formats
+
 | Format |
 |---|
 | `.png` |
-| `.jpg`|
+| `.jpg` |
 | `.webp` |
-| `.bmp`|
+| `.bmp` |
 | `.tiff` |
 | `.ico` |
 | `.qoi` |
 
+---
 
+## FFvert image background removal system
 
-## FFvert image background remove system
-Image background remove system based on `@imgly/background-removal-node` package. The AI model `isnet_fp16` is downloaded from `IMG.LY` servers and runs locally.
+The background removal system is based on the `@imgly/background-removal-node` package. The AI model `isnet_fp16` is downloaded from IMG.LY servers and runs locally.
 
-
+---
 
 ## YouTube video downloader
-YouTube Downloader is based on `youtube-dl-exec` package. The file is downloaded and converted using `FFmpeg` for user selected format and resolution.
+
+The YouTube Downloader is based on the `youtube-dl-exec` package. The file is downloaded and converted using `FFmpeg` for the user-selected format and resolution.
 
 ## Installation
 
@@ -101,10 +96,9 @@ node app.js
 ```
 
 Then open your browser at:
+`http://localhost:3003
 
-```
-http://localhost:3003
-```
 ## Requirements
+
 - Node.js
 - Python 3.9+ (required by `youtube-dl-exec`)
