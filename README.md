@@ -2,7 +2,7 @@
 
 A simple web app for converting video and image files, and downloading YouTube videos.
 
-## Features
+# Features
 
 ## Video Conversion
 
@@ -47,7 +47,7 @@ A simple web app for converting video and image files, and downloading YouTube v
 
 3. Click `OK` and wait for your video file.
 
---- 
+
 
 ## FFvert supported video formats and resolution
 
@@ -77,12 +77,11 @@ Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 | `.qoi` |
 
 
----
 
 ## FFvert image background remove system
 Image background remove system based on `@imgly/background-removal-node` package. The AI model `isnet_fp16` is downloaded of `IMG.LY` servers and runs locally.
 
----
+
 
 ## YouTube video downloader
 YouTube Downloader is base on `youtube-dl-exec` package. The file is downloaded and converted using `FFmpeg` for user selected format and resolution.
