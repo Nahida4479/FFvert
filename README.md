@@ -36,7 +36,7 @@ A simple web app for converting video and image files, and downloading YouTube v
 | Step | Preview |
 |---|---|
 | **1.** Paste your YouTube video link (YouTube Shorts are supported) | |
-| **2.** Select a format and resolution | <img src="./public/image/FormatandResolution_yt.png" width="300"> |
+| **2.** Select a format and resolution | <img src="./public/image/FormatandResolution_yt.png" width="300" height="150"> |
 | **3.** Click `OK` and wait for your video file | |
 
 ---
@@ -54,7 +54,7 @@ A simple web app for converting video and image files, and downloading YouTube v
 | Windows Media Video | `.wmv` |
 
 Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
->**Note:** "The GIF format additionally generates PNG palette for better GIF video colors"
+> **Note:** The GIF format additionally generates a color palette for better color accuracy.
 
 ---
 
@@ -88,8 +88,7 @@ Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 | `OPUS` | 
 | `VORBIS` |
 
->**Note:** "The GIF format additionally generates PNG palette for better GIF video colors"
-
+> **Note:** The GIF format additionally generates a color palette for better color accuracy.
 
 ## FFvert image background removal system
 
