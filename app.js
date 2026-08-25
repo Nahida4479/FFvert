@@ -195,12 +195,19 @@ app.post('/convert-image', upload.single('image'), function(req, res) {
     const outputFile = `uploads/finalfile-${req.file.filename}.${targetFormat}`;
 
     if (targetFormat === 'removebackground') {
-        removeBackground(inputPath).then((blob) => {
-                return blob.arrayBuffer();
-        }).then((arrayBuffer) => {
-            const buffer = Buffer.from(arrayBuffer);
-            res.set('Content-Type', 'image/png');
-            res.send(buffer);
+        console.time('pobieranie');
+    removeBackground(inputPath, {
+        progress: (key, current, total) => {
+            console.log(`Pobieranie ${key}: ${current} / ${total}`);
+        }
+    }).then((blob) => {
+        console.timeEnd('pobieranie');
+        return blob.arrayBuffer();
+    }).then((arrayBuffer) => {
+        const buffer = Buffer.from(arrayBuffer);
+        res.set('Content-Type', 'image/png');
+        res.send(buffer);
+        // reszta bez zmian
 
             fs.unlink(inputPath, (err) => {
                 if (err) console.log("Failed to delete input file" , err);

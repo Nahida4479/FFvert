@@ -1,20 +1,55 @@
 # FFvert
 
-A simple web app for converting video files - upload a video, pick a format and resolution, and download the converted file. Conversion runs entirely on the server using FFmpeg.
+A simple web app for converting video and image files, and downloading YouTube videos.
 
 ## Features
 
-- Convert videos between several common formats
-- Pick a target resolution (4K down to 480p)
-- Automatically keeps the original orientation - a portrait (9:16) video stays portrait, a landscape (16:9) video stays landscape
-- Live progress bar during conversion
-- High-quality GIF output using a custom two-pass color palette
-- Drag & drop or click-to-browse file upload
-- Automatic cleanup of temporary files on the server
+## Video Conversion
+
+![FFvert](./public/image/FFvert_README.png)
+
+1. Upload your video file.
+2. Select video format.
+
+![Format](./public/image/Format.png)
+
+3. Select video resolution.
+
+![Resolution](./public/image/Resolution.png)
+
+4. Click `Convert` and wait for convert finish.
+
+![Convert](./public/image/Convert-process.png)
 
 ---
 
-## Supported video formats
+## Image Conversion
+
+![FFvert](./public/image/FFvert_image.png)
+
+1. Upload your image file.
+2. Select image format or the `Remove background` option.
+
+![Format](./public/image/Format_image.png)
+
+3. Click `Convert` and wait for finish.
+
+---
+
+## YouTube Video Downloader
+
+![Downloader](./public/image/Yt-downloader.png)
+
+1. Paste your YouTube video film (YouTube shorts video is supported).
+2. Select format and resolution.
+
+![Format and Resolution](./public/image/FormatandResolution_yt.png)
+
+3. Click `OK` and wait for your video file.
+
+--- 
+
+## FFvert supported video formats and resolution
 
 | Format | Extension |
 |---|---|
@@ -26,13 +61,11 @@ A simple web app for converting video files - upload a video, pick a format and 
 | Matroska | `.mkv` |
 | Windows Media Video | `.wmv` |
 
-## Video resolution & orientation
-
 Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 
 ---
 
-## Supported image formats
+## FFvert supported image formats
 | Format |
 |---|
 | `.png` |
@@ -45,6 +78,14 @@ Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 
 
 ---
+
+## FFvert image background remove system
+Image background remove system based on `@imgly/background-removal-node` package. The AI model `isnet_fp16` is downloaded of `IMG.LY` servers and runs locally.
+
+---
+
+## YouTube video downloader
+YouTube Downloader is base on `youtube-dl-exec` package. The file is downloaded and converted using `FFmpeg` for user selected format and resolution.
 
 ## Installation
 
@@ -65,3 +106,6 @@ Then open your browser at:
 ```
 http://localhost:3003
 ```
+## Requirements
+- Node.js
+- Python 3.9+ (required by `youtube-dl-exec`)
