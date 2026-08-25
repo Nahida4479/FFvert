@@ -8,12 +8,12 @@ A simple web app for converting video and image files, and downloading YouTube v
 
 <img src="./public/image/FFvert_README.png" width="500">
 
-| Step | Preview |
-|---|---|
-| **1.** Upload your video file | |
-| **2.** Select a video format | <img src="./public/image/Format.png" width="300"> |
-| **3.** Select a video resolution | <img src="./public/image/Resolution.png" width="300"> |
-| **4.** Click `Convert` and wait for the conversion to finish | <img src="./public/image/Convert-process.png" width="300"> |
+| Step | 
+|---|
+| **1.** Upload your video file | 
+| **2.** Select a video format |
+| **3.** Select a video resolution | 
+| **4.** Click `Convert` and wait for the conversion to finish |
 
 ---
 
@@ -21,11 +21,11 @@ A simple web app for converting video and image files, and downloading YouTube v
 
 <img src="./public/image/FFvert_image.png" width="500">
 
-| Step | Preview |
-|---|---|
-| **1.** Upload your image file | |
-| **2.** Select an image format or the `Remove background` option | <img src="./public/image/Format_image.png" width="300"> |
-| **3.** Click `Convert` and wait for the conversion to finish | |
+| Step | 
+|---|
+| **1.** Upload your image file |
+| **2.** Select an image format or the `Remove background` option |
+| **3.** Click `Convert` and wait for the conversion to finish | 
 
 ---
 
