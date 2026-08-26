@@ -55,7 +55,6 @@ A simple web app for converting video and image files, and downloading YouTube v
 | `.mkv` |
 | `.wmv` |
 
-Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 > **Note:** The GIF format additionally generates a color palette for better color accuracy.
 
 
