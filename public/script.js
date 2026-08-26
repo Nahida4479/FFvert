@@ -55,6 +55,11 @@ function updateFormatoptions(formatsArray) {
 }
 
 convertbutton.addEventListener("click", async function() {
+    if (!uploadfile.files[0]) {
+        alert('Please select a file first.')
+        return;
+    }
+    
     convertbutton.disabled = true;
     fileformat.disabled = true;
     videoresolutionlist.hidden = true;
@@ -270,6 +275,12 @@ setInterval(function() {
 
 
 ytOkButton.addEventListener('click',async () => {
+
+    if (!ytLinkInput.value.trim()) {
+        alert("Please paste a YouTube link first")
+        return;
+    }
+    })
     const conversionId = `FFvert-${Date.now()}` + Math.random().toString(36).slice(2);
     const eventSource = new EventSource(`/progress/` + conversionId);
 
@@ -285,6 +296,8 @@ ytOkButton.addEventListener('click',async () => {
         }
     };
 
+    ytOkButton.disabled = true
+    ytOkButton.style.backgroundColor = '#A9A9A9'
     await new Promise(resolve => setTimeout(resolve, 200));
     try{
 
@@ -308,7 +321,9 @@ ytOkButton.addEventListener('click',async () => {
 
 } finally {
     eventSource.close();
-    ytProgressContainer.style.display = 'none'
+    ytProgressContainer.style.display = 'none';
+    ytOkButton.disabled = false;
+    ytOkButton.style.backgroundColor = '';
 }
 })
 
