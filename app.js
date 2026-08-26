@@ -21,6 +21,8 @@ if (!fs.existsSync('uploads/')) {
     }
 }
 
+
+
 const uploadedFiles = fs.readdirSync('uploads/');
 
 uploadedFiles.forEach(function(fileName) {
@@ -30,12 +32,20 @@ uploadedFiles.forEach(function(fileName) {
 });
 console.log("Cleaned up", uploadedFiles.length, "old files from uploads/");
 
+const validVideoFormats = ['gif', 'mov', 'mp3', 'mp4', 'avi', 'mkv', 'wmv']
+
 app.use(express.static('./public'))
 app.post('/convert', upload.single('video'), function(req, res) {
     if (!req.file) {
         res.status(400).send("No file uploaded!");
         return;
     }
+
+    if (!validVideoFormats.includes(req.body.format.toLowerCase())) {
+        res.status(400).send("Unsupported format");
+        return;
+    }
+
     console.log(req.file)
     console.log(res.body)
     const inputPath = req.file.path
@@ -263,7 +273,13 @@ app.post('/convert-image', upload.single('image'), function(req, res) {
 }
 });
 
+const validYtFormats = ['mp4', 'mp3', 'mov', 'gif', 'mkv', 'webm', 'aac', 'm4a', 'flac', 'wav', 'opus', 'vorbis']
+
 app.post(`/download-youtube`, upload.none(), async function (req, res) {
+    if (!validYtFormats.includes(req.body.format.toLowerCase())) {
+        res.status(400).send('Unsupported format');
+        return;
+    }
     const link = req.body.link;
     const format = req.body.format;
     const resolution = req.body.resolution;
