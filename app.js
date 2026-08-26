@@ -267,14 +267,17 @@ app.post(`/download-youtube`, upload.none(), async function (req, res) {
     const link = req.body.link;
     const format = req.body.format;
     const resolution = req.body.resolution;
-
-    const downloadedPath = await downloadVideo(link, resolution);
-    const outputfile = `uploads/FFvert-${crypto.randomUUID()}.${req.body.format}`
     const conversionId = req.body.conversionId;
 
     if (progressConmections[conversionId]) {
         progressConmections[conversionId].write(`data: Your video is downloading, please wait...\n\n`)
     }
+
+    try {
+    console.log(`Start downloading`)
+    const downloadedPath = await downloadVideo(link, resolution);
+    console.log(`Download finished`, downloadedPath)
+    const outputfile = `uploads/FFvert-${crypto.randomUUID()}.${req.body.format}`
 
      execFile(ffmpeg_probe, ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height:format=duration', '-of', 'json', downloadedPath], function(error, stdout, stderr) {
         console.log("PROBE ERROR:", error);
@@ -289,7 +292,7 @@ app.post(`/download-youtube`, upload.none(), async function (req, res) {
         if (req.body.format === "gif") {
     if (progressConmections[conversionId]) {
         progressConmections[conversionId].write(`data: Generating Color Palette\n\n`);
-    }
+    } 
 
     let palleteFilter = 'palettegen';
     const gifPalleteGeneratePath = `uploads/palette-${crypto.randomUUID()}.png`;
@@ -368,6 +371,10 @@ app.post(`/download-youtube`, upload.none(), async function (req, res) {
     }); 
 }
 })
+    } catch (err) {
+        console.log(`Download/conversion error:`, err);
+        res.status(500).send(`Something went wrong.`);
+    }
 })
 
 app.listen(3003, () => {

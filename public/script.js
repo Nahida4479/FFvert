@@ -17,6 +17,10 @@ const ytOkButton = document.getElementById('yt-dlp-ok');
 const ytLinkInput = document.getElementById('yt-dlp-link-button');
 const ytFormatSelect = document.getElementById('yt-dlp-select');
 const ytResolutionSelect = document.getElementById('yt-dlp-resolution');
+const ytProgressText = document.getElementById('yt-dlp-progresstext')
+const ytProgressContainer = document.getElementById(`yt-progressContainer`)
+const ytProgressBar = document.getElementById(`yt-dlp-progressbar1`)
+
 
 const videoFormats = [
     { value: 'gif', label: 'GIF' },
@@ -268,15 +272,20 @@ setInterval(function() {
 ytOkButton.addEventListener('click',async () => {
     const conversionId = `FFvert-${Date.now()}` + Math.random().toString(36).slice(2);
     const eventSource = new EventSource(`/progress/` + conversionId);
+
+    ytProgressContainer.style.display = 'block';
+    ytProgressBar.style.width = '0%';
+
     eventSource.onmessage = function(event) {
         if (event.data === 'Your video is downloading, please wait...') {
-            progressText.textContent = event.data;
+            ytProgressText.textContent = event.data;
         } else {
-        progressBar.style.width = event.data + '%';
-        progressText.textContent = event.data + "%";   
+        ytProgressBar.style.width = event.data + '%';
+        ytProgressText.textContent = event.data + "%";   
         }
     };
 
+    await new Promise(resolve => setTimeout(resolve, 200));
     try{
 
     const formData = new FormData();
@@ -299,6 +308,7 @@ ytOkButton.addEventListener('click',async () => {
 
 } finally {
     eventSource.close();
+    ytProgressContainer.style.display = 'none'
 }
 })
 
