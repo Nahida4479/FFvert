@@ -39,25 +39,27 @@ A simple web app for converting video and image files, and downloading YouTube v
 | **2.** Select a format and resolution 
 | **3.** Click `OK` and wait for your video file 
 
-# Supported formats
+--- 
 
-## FFvert supported video formats and resolutions
+# Supported formats and resolutions
 
-| Format | Extension |
+## FFvert video
+
+| Format| Resolutions |
 |---|---|
-| GIF | `.gif` |
-| QuickTime | `.mov` |
-| MP3 (audio only) | `.mp3` |
-| MP4 | `.mp4` |
-| AVI | `.avi` |
-| Matroska | `.mkv` |
-| Windows Media Video | `.wmv` |
+| `.gif` | `4k` |
+| `.mov` | `1440p` |
+| `.mp3` | `1080p` | 
+| `.mp4` | `720p` |
+| `.avi` | `480p` |
+| `.mkv` |
+| `.wmv` |
 
 Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 > **Note:** The GIF format additionally generates a color palette for better color accuracy.
 
 
-## FFvert supported image formats
+## FFvert image
 
 | Format |
 |---|
@@ -70,16 +72,16 @@ Available target resolutions: **4K, 1440p, 1080p, 720p, 480p**.
 | `.qoi` |
 
 
-## YouTube Downloader supported output formats
-| Format |
-|---|
-| `MP4` | 
-| `MP3` | 
-| `MOV` | 
-| `GIF` |  
-| `MKV` | 
-| `WEBM` | 
-| `AAC` | 
+## YouTube Downloader 
+| Format | Resolutions |
+|---|---|
+| `MP4` | `1440p` |
+| `MP3` | `1080p` |
+| `MOV` | `720p` |
+| `GIF` |  `480p` |
+| `MKV` | `360p` |
+| `WEBM` | `240p` |
+| `AAC` | `144p` |
 | `M4A` | 
 | `FLAC` | 
 | `WAV` | 
