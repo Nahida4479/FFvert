@@ -269,8 +269,12 @@ ytOkButton.addEventListener('click',async () => {
     const conversionId = `FFvert-${Date.now()}` + Math.random().toString(36).slice(2);
     const eventSource = new EventSource(`/progress/` + conversionId);
     eventSource.onmessage = function(event) {
+        if (event.data === 'Your video is downloading, please wait...') {
+            progressText.textContent = event.data;
+        } else {
         progressBar.style.width = event.data + '%';
         progressText.textContent = event.data + "%";   
+        }
     };
 
     try{

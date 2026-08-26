@@ -272,6 +272,10 @@ app.post(`/download-youtube`, upload.none(), async function (req, res) {
     const outputfile = `uploads/FFvert-${crypto.randomUUID()}.${req.body.format}`
     const conversionId = req.body.conversionId;
 
+    if (progressConmections[conversionId]) {
+        progressConmections[conversionId].write(`data: Your video is downloading, please wait...\n\n`)
+    }
+
      execFile(ffmpeg_probe, ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height:format=duration', '-of', 'json', downloadedPath], function(error, stdout, stderr) {
         console.log("PROBE ERROR:", error);
         console.log("PROBE STDOUT:", stdout);
