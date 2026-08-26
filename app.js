@@ -3,7 +3,7 @@ const multer = require('multer');
 const ffmpegPath = require('ffmpeg-static')
 const { execFile, exec, spawn } = require('child_process');
 const ffmpeg_probe = require('@andrkrn/ffprobe-static');
-const upload = multer({ dest: 'uploads/'});
+const upload = multer({ dest: 'uploads/', limits: { fileSize: 2 * 1024 * 1024 * 1024}});
 const app = express();
 const fs = require('fs');
 const progressConmections = {};
@@ -375,6 +375,13 @@ app.post(`/download-youtube`, upload.none(), async function (req, res) {
         console.log(`Download/conversion error:`, err);
         res.status(500).send(`Something went wrong.`);
     }
+})
+
+app.use((err, req, res, next) => {
+    if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).send("File is too large. Maximum size is 2GB.");
+    }
+    next(err)
 })
 
 app.listen(3003, () => {

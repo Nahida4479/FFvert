@@ -59,7 +59,7 @@ convertbutton.addEventListener("click", async function() {
         alert('Please select a file first.')
         return;
     }
-    
+
     convertbutton.disabled = true;
     fileformat.disabled = true;
     videoresolutionlist.hidden = true;
@@ -280,7 +280,6 @@ ytOkButton.addEventListener('click',async () => {
         alert("Please paste a YouTube link first")
         return;
     }
-    })
     const conversionId = `FFvert-${Date.now()}` + Math.random().toString(36).slice(2);
     const eventSource = new EventSource(`/progress/` + conversionId);
 
