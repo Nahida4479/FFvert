@@ -4,8 +4,10 @@ RUN apt-get update && apt-get install -y python3 python3-pip && rm -rf /var/lib/
 
 WORKDIR /FFvert
 
+ENV NODE_OPTIONS="--jitless"
+
 COPY package*.json ./
-RUN npm install
+RUN npm install --maxsockets=1 --jobs=1
 
 COPY . .
 

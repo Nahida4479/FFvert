@@ -16,7 +16,7 @@ mergeOutputFormat: 'mp4',
 ffmpegLocation: ffmpegPath
 };
 
-const cookiesPath = path.join(__dirname, '..', 'cookies.txt');
+const cookiesPath = path.join(__dirname, '..', 'cook.txt');
 if (fs.existsSync(cookiesPath)) {
 options.cookies = cookiesPath;
 }
