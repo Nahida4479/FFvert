@@ -1,0 +1,16 @@
+FROM node:22-bookworm
+
+RUN apt-get update && apt-get install -y python3 python3-pip && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /FFvert
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+RUN mkdir -p uploads
+
+EXPOSE 3003
+
+CMD ["node", "app.js"]

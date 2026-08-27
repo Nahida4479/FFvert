@@ -648,4 +648,54 @@ flex-direction: column;
   min-height: 30px;
   width: 150px;
 }
+
+#yt-dlp-panel {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-left: 0;
+  justify-content: center;
+}
+
+#yt-dlp-background {
+  width: 95%;
+  max-width: 90%;
+  margin: 20px auto;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+.dropzone {
+  width: 100%;
+}
+
+#yt-dlp-how-to-you {
+  background-color: #ffffff;
+  width: 75%; 
+  height: 350px;
+  border: 2px dashed red;
+  border-radius: 50px;
+  text-align: center;
+  margin: 20px auto;
+  text-align: left;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#yt-dlp-link-panel {
+  margin-right: 20px;
+}
+
+#yt-dlp-progresstext {
+  width: 100%;
+}
 }

@@ -117,6 +117,23 @@ node app.js
 Then open your browser at:
 `http://localhost:3003`
 
+## Docker
+You can run the image using a pre-built Docker image.
+
+```bash
+docker pull ghcr.io/nahida4479/ffvert:latest
+docker run -p 3003:3003 ghcr.io/nahida4479/ffvert:latest
+```
+
+or build it yourself
+
+```bash
+git clone https://github.com/Nahida4479/FFvert.git
+cd FFvert
+docker build -t ffvert .
+docker run -p 3003:3003 ffvert
+```
+
 ## Requirements
 
 - Node.js
