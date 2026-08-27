@@ -7,7 +7,7 @@ WORKDIR /FFvert
 ENV NODE_OPTIONS="--jitless"
 
 COPY package*.json ./
-RUN npm install --maxsockets=1 --jobs=1
+RUN npm install
 
 COPY . .
 
