@@ -1,20 +1,29 @@
 const youtubedl = require('youtube-dl-exec');
 const ffmpegPath = require('ffmpeg-static');
 const crypto = require(`crypto`);
+const path = require('path');
+const fs = require('fs');
 
 async function downloadVideo(url, resolution) {
-    const height = resolution.replace('p', '');
+const height = resolution.replace('p', '');
 
-    const outputPath = `uploads/ytfile-FFvert-${crypto.randomUUID()}.%(ext)s`;
-    
-    await youtubedl(url, {
-        output: outputPath,
-        format: `bv*[height<=${height}]+ba/b`,
-        mergeOutputFormat: 'mp4',
-        ffmpegLocation: ffmpegPath
-    });
+const outputPath = `uploads/ytfile-FFvert-${crypto.randomUUID()}.%(ext)s`;
 
-    return outputPath.replace('%(ext)s', 'mp4');
+const options = {
+output: outputPath,
+format: `bv*[height<=${height}]+ba/b`,
+mergeOutputFormat: 'mp4',
+ffmpegLocation: ffmpegPath
+};
+
+const cookiesPath = path.join(__dirname, '..', 'cookies.txt');
+if (fs.existsSync(cookiesPath)) {
+options.cookies = cookiesPath;
+}
+
+await youtubedl(url, options);
+
+return outputPath.replace('%(ext)s', 'mp4');
 }
 
 
