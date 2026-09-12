@@ -26,7 +26,7 @@ await youtubedl(url, options);
 return outputPath.replace('%(ext)s', 'mp4');
 }
 
-const firefoxProfilePath = '/app/ff-profile';u
+const firefoxProfilePath = '/FFvert/ff-profile';u
 if (fs.existsSync(path.join(firefoxProfilePath, 'cookies.sqlite'))) {
     options.cookiesFromBrowser = `firefox:${firefoxProfilePath}`
 }
