@@ -1,7 +1,7 @@
 # FFvert
 
 A simple web app for converting video and image files, and downloading YouTube videos.
-
+> **Note:** Please read information [about cookies](./YouTube_Cookies.md)
 # Features
 
 ## Video Conversion
@@ -118,11 +118,11 @@ Then open your browser at:
 `http://localhost:3003`
 
 ## Docker
-You can run the image using a pre-built Docker image.
+You can run the image using a pre-built Docker image but remember [about cookies](./YouTube_Cookies.md).
 
 ```bash
 docker pull ghcr.io/nahida4479/ffvert:latest
-docker run -p 3003:3003 ghcr.io/nahida4479/ffvert:latest
+docker run -p 3003:3003 -v <ff-profile_file_path>:/app/ff-profile ghcr.io/nahida4479/ffvert:latest
 ```
 
 or build it yourself
