@@ -26,5 +26,9 @@ await youtubedl(url, options);
 return outputPath.replace('%(ext)s', 'mp4');
 }
 
+const firefoxProfilePath = '/root/ff-profile';
+if (fs.existsSync(path.join(firefoxProfilePath, 'cookies.sqlite'))) {
+    options.cookiesFromBrowser = `firefox:${firefoxProfilePath}`
+}
 
 module.exports = {downloadVideo}
