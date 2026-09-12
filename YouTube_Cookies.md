@@ -10,5 +10,5 @@ YouTube Downloader system required YouTube cookies please follow the instruction
 ```
 5. Mount that folder into the Docker container:
 ```bash
-   docker run -v <ff-profile_file_path>:/app/ff-profile ...
+   docker run -v <ff-profile_folder_path>:/FFvert/ff-profile -p 3003:3003 --name=FFvert ghcr.io/nahida4479/ffvert:latest
 ```
